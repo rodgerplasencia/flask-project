@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cost Management Project</title>
+<!-- Metatags  -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Coding Dojo Project" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Meta tag Keywords -->
+
+<!--//font-awesome-css-->
+<!-- style_sheet -->
+<link href="{{ url_for('static',filename='login_assets/css/style.css') }}" rel="stylesheet" type="text/css" media="all" /><!--style_sheet-->
+<link href="{{ url_for('static',filename='login_assets/css/font-awesome.css') }}" rel="stylesheet"><!--font-awesome-css-->
+<link href="{{ url_for('static', filename='login_assets/fonts.googleapis.com/css?family=PT+Sans') }}" rel="stylesheet"><!--online_fonts-->
+<link href="{{ url_for('static', filename='login_assets/fonts.googleapis.com/css?family=Raleway') }}" rel="stylesheet"><!--online_fonts-->
+<!-- //style-Css -->
+</head>
+<body>
+<!-- main -->
+<div class="main">
+	<h1>Cost Management Project</h1>
+	<div class="content">
+		<div class="main-grids">			
+				<div class="left-grid">
+					<div class="signin-left-grid">
+						<h2>Create Account </h2>
+						<div class="left-form">
+							<form action="/register" method="POST">
+								{% with messages = get_flashed_messages(category_filter=['register'])  %}
+						                {% if messages  %}
+						                    <div class="alert alert-danger" role="alert">
+						                        <strong>Flashhh!!!!</strong>
+						                    {% for message in messages  %}
+						        
+						                    <p>{{message}}</p>
+						                        
+						                    {% endfor %}
+						                        
+						                    </div>
+						                {% endif %}
+						         
+						         {% endwith %}
+								<input type="text" name="first_name" placeholder="First_name" required="required"/>
+								<input type="text" name="last_name" placeholder="Last_name" required="required"/>
+								<input type="text" name="email" placeholder="Email" required="required"/>
+								<input type="password" name="password" placeholder="Password" required="required"/>
+								<input type="password" name="confirm" placeholder="Confirm Password" required="required"/>
+								<input type="submit" value="Create Account"/>
+							</form>
+						</div>	
+					</div>		
+				</div>
+
+				<div class="right-grid">
+					<div class="signin-left-grid">
+						<h2>Login </h2>
+						<div class="left-form">
+							<form action="/login" method="POST">
+								{% with messages = get_flashed_messages(category_filter=['login'])  %}
+							            {% if messages  %}
+							                <div class="alert alert-danger" role="alert">
+							                    <strong>Flashhh!!!!</strong>
+							                {% for message in messages  %}
+							    
+							                <p>{{message}}</p>
+							                    
+							                {% endfor %}
+							                    
+							                </div>
+							            {% endif %}
+							     
+							     {% endwith %}
+								<input type="text" name="email" placeholder="Email" required="required"/>
+								<input type="password" name="password" placeholder="Password" required="required"/>
+								<input type="submit" value="Sign In"/>
+								<div class="signin-bottom">
+									<p><a href="#">Forgot your Password ?</a></p>
+								</div>
+								<div class="form-bottom">
+									<p>Not registered? <a href="#">Sign up</a></p>
+								</div>
+							</form>
+						</div>	
+					</div>		
+				</div>
+				
+				
+				<div class="clear"></div>
+		</div>
+	</div>
+	<!--copy-right-->
+		<div class="copyright">
+			<p>Cost Mangement Project</p>
+		</div>
+	<!--//copy-right-->
+</div>
+<!--// main -->
+</body>
+</html>

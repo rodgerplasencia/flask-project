@@ -1,0 +1,62 @@
+            {% include 'header.html' %}
+               <div class="row" style="padding-right: 5%; padding-left: 5%;">
+                  <div class="col-md-12">
+                     <div class=" card">
+                        <div class="card-body">
+                           <h5 class="card-title">Welcome {{user.firstname}} {{user.lastname}}</h5>
+                           <div class="row">
+                              <div class="col">
+                                 <div class="card-body">
+                                    <h5 class="card-title">Book</h5>
+                                       
+                                       <p>Title: {{book.title}}</p>
+                                       <p>Added On: {{book.created_at.strftime("@ %c")}} </p>
+                                       <p>Last Updated On: {{book.updated_at.strftime("@ %c")}}</p>
+                                       <p>Description: {{book.description}}</p>
+                                    
+                                 
+                                 </div>
+                                 </ul>
+                              </div>
+                              <div class="col">
+                                 <div class="card-body">
+                                    <div class="card-header">Users Who Like This Book
+                                    </div>
+                                    <div class="table-responsive">
+                                       <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                          <tbody>
+                                             {% for like in likers %}
+                                             
+                                             <tr>
+                                                <td style="text-align: left;"> {{like.name}} </td>
+                                             </tr>
+                                             
+                                             {% endfor %}
+                                          
+                                          </tbody>
+                                       </table>
+                                       {% with messages = get_flashed_messages(category_filter=['favorite'])  %}
+                                       {% if messages  %}
+                                           <div class="alert alert-danger" role="alert">
+                                               <strong>Flashhh!!!!</strong>
+                                           {% for message in messages  %}
+                               
+                                           <p>{{message}}</p>
+                                               
+                                           {% endfor %}
+                                               
+                                           </div>
+                                       {% endif %}
+                                
+                                {% endwith %}
+                                <br>
+                                       <a href="/add_favorite/book/{{book.id}}" class="btn btn-success">Add to Favorite</a>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            {% include 'footer.html' %}

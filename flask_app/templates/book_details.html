@@ -1,0 +1,91 @@
+            {% include 'header.html' %}
+               <div class="row" style="padding-right: 5%; padding-left: 5%;">
+                  <div class="col-md-12">
+                     <div class=" card">
+                        <div class="card-body">
+                           <h5 class="card-title">Welcome {{user.firstname}} {{user.lastname}}</h5>
+                           <div class="row">
+                              <div class="col">
+                                 <div class="card-body">
+                                    <h5 class="card-title">Update Book</h5>
+                              {% with messages = get_flashed_messages(category_filter=['book'])  %}
+						                {% if messages  %}
+						                    <div class="alert alert-danger" role="alert">
+						                        <strong>Flashhh!!!!</strong>
+						                    {% for message in messages  %}
+						        
+						                    <p>{{message}}</p>
+						                        
+						                    {% endfor %}
+						                        
+						                    </div>
+						                {% endif %}
+						         
+						         {% endwith %}
+                                    <form action="/update/book" method="POST" class="">
+                                       <div class="position-relative row form-group">
+                                          <input name="id" value="{{book.id}}" type="hidden" class="form-control">
+                                          <div class="">
+                                             <input name="title" value="{{book.title}}" type="text" class="form-control">
+                                          </div>
+                                       </div>
+                                       <p>Added By: {{user.firstname}}  {{user.Lastname}}</p>
+                                       <p>Added On: {{book.created_at.strftime("%Y @ %c")}} </p>
+                                       <p>Last Updated On: {{book.updated_at.strftime("%Y @ %c")}}</p>
+                                       <div class="position-relative row form-group">
+                                          <label class="col-sm-2 col-form-label">Description</label>
+                                          <div class=""><textarea name="description" class="form-control">{{book.description}}</textarea></div>
+                                       </div>
+                                       <div class="position-relative row form-check">
+                                          <div class="col-sm-10 offset-sm-2">
+                                             <button type="submit" name="Update Book" class="btn btn-secondary">Update</button>
+                                             <a href="/delete/book/{{book.id}}" class="btn btn-danger">Delete</a>
+                                          </div>
+                                       </div>
+                                    </form>
+                                 </div>
+                                 </ul>
+                              </div>
+                              <div class="col">
+                                 <div class="card-body">
+                                    <div class="card-header">Users Who Like This Book
+                                    </div>
+                                    <div class="table-responsive">
+                                       <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                          <tbody>
+                                             {% with messages = get_flashed_messages(category_filter=['not_show'])  %}
+                                             {% if messages  %}
+                                                <div class="alert alert-danger" role="alert">
+                                                      <strong>Flashhh!!!!</strong>
+                                                {% for message in messages  %}
+                                    
+                                                <p>{{message}}</p>
+                                                      
+                                                {% endfor %}
+                                                      
+                                                </div>
+                                             {% endif %}
+                                       
+                                       {% endwith %}
+                                             {% for like in book_likers %}
+                                             
+                                             <tr>
+                                                <td style="text-align: left;"> {{like.name}} </td>
+                                                <td style="text-align: left;"> <a href="/un_favorite/book/{{like.id}}" class="btn btn-danger">Un-Favorite {{like.id}}</a> </td>
+                                             </tr>
+                                             
+                                             {% endfor %}
+                                            
+                                          </tbody>
+                                       </table>
+                                       <br>
+                                       
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            {% include 'footer.html' %}

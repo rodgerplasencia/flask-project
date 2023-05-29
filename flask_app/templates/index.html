@@ -1,0 +1,117 @@
+<!doctype html>
+<!DOCTYPE html>
+<html lang="zxx">
+<!-- Head -->
+
+<head> 
+    <title>Cost Management System Application  Login</title>
+    <!-- Meta-Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="keywords" content="Okenagro">
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <!-- //Meta-Tags -->
+    <!-- Index-Page-CSS -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='login/css/style.css') }}" type="text/css" media="all">
+    <!-- //Custom-Stylesheet-Links -->
+    <!--fonts -->
+    <link href="{{ url_for('static',filename='login/fonts.googleapis.com/css?family=Mukta+Mahee:200,300,400,500,600,700,800" rel="stylesheet') }}">
+    <!-- //fonts -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='logincss/font-awesome.css') }}" type="text/css" media="all">
+    <!-- //Font-Awesome-File-Links -->
+
+    <link rel="icon" href="{{ url_for('static',filename='login/images/favicon.png') }}" type="image/png" sizes="16x16">
+
+</head> {{ url_for('static',filename='login_assets/css/style.css') }}
+<!-- //Head -->
+<!-- Body -->
+
+<body>
+    <br>
+    <br>
+    <br>
+    <div class="content-w3ls">
+        <center><img  width="80" 
+         src="images/logo.png"></center>
+        <div class="content-bottom">
+            <form action="/login" method="POST">
+                {% with messages = get_flashed_messages(category_filter=['register'])  %}
+                {% if messages  %}
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Flashhh!!!!</strong>
+                    {% for message in messages  %}
+        
+                    <p>{{message}}</p>
+                        
+                    {% endfor %}
+                        
+                    </div>
+                {% endif %}
+         
+         {% endwith %}
+                <div class="field-group">
+                    <span class="fa fa-user" aria-hidden="true"></span>
+                    <div class="wthree-field">
+                        <input name="email" id="text1" type="email" value="" placeholder="email" required>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <span class="fa fa-lock" aria-hidden="true"></span>
+                    <div class="wthree-field">
+                        <input name="password" id="myInput" type="Password" placeholder="Enter Password">
+                    </div>
+                </div>
+                <div class="field-group">
+                    <div class="check">
+                        <label class="checkbox w3l">
+                            <input type="checkbox" onclick="myFunction()">
+                            <i> </i>show password</label>
+                    </div>
+                    <!-- script for show password -->
+                    <script>
+                        function myFunction() {
+                            var x = document.getElementById("myInput");
+                            if (x.type === "password") {
+                                x.type = "text";
+                            } else {
+                                x.type = "password";
+                            }
+                        }
+                    </script>
+                    <!-- //script for show password -->
+                </div>
+                <div class="wthree-field">
+                    <input id="saveForm" name="Create Account" type="submit" value="sign in" />
+                </div>
+                <ul class="list-login">
+                    <li class="switch-agileits">
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                            keep me signed in
+                        </label>
+                    </li>
+                    <li>
+                        <a href="#" class="text-right">forgot password?</a>
+                    </li>
+                    <li class="clearfix"></li>
+                </ul>
+            </form>
+        </div>
+    </div>
+    <div class="copyright text-center">
+        <p> 2023 All rights reserved by Cost Management System Application.
+           
+        </p>
+    </div>
+</body>
+<!-- //Body -->
+</html>
