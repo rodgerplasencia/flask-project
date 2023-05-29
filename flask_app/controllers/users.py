@@ -1,7 +1,7 @@
 from flask import render_template, redirect, request, session, flash
 from flask_app import app
 from flask_app.models.user import User
-from flask_app.models.post import Post
+from flask_app.models.project import Project
 from flask_app.models.like import Like
 from flask_bcrypt import Bcrypt
 
@@ -69,7 +69,7 @@ def dashboard():
     data = {"id": session["user_id"]}
     data_id = {"user_id": session["user_id"]}
     user = User.get_by_id(data)
-    posts = Post.get_user_post(data_id)
+    posts = Project.get_user_post(data_id)
 
     return render_template("dashboard.html", user=user)
 
