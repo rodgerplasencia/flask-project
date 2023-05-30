@@ -5,7 +5,7 @@ from flask_bcrypt import Bcrypt
 from flask_app import app
 from flask_app.models.user import User
 from flask_app.models.project import Project
-from flask_app.models.like import Like
+from flask_app.models.address import Address
 
 
 def check_session():
@@ -13,22 +13,41 @@ def check_session():
         return redirect("/logout")
 
 
-@app.route("/new/book")
-def new_book():
+@app.route("/project")
+def view_project():
     check_session()
-
     data = {"id": session["user_id"]}
-    return render_template("new_book.html", user=User.get_by_id(data))
+    user = User.get_by_id(data)
+    data = {"id": session["user_id"]}
+    address = Address.get_project_address()
+    return render_template("project.html", user=user, address=address)
 
 
-@app.route("/add/post", methods=["POST"])
-def create_post():
+@app.route("/add/project", methods=["POST"])
+def add_project():
     check_session()
+    project_data = {
+        "project_name": request.form["project_name"],
+        "lot_area": request.form["lot_area"],
+        "floor_area": request.form["floor_area"],
+        "location": request.form["location"],
+        "description": request.form["description"],
+        "project_revinue": request.form["project_revinue"],
+        "project_address_id": request.form["address_id"],
+    }
+    Project.save(project_data)
+    data = {"id": session["user_id"]}
+    user = User.get_by_id(data)
+    return render_template("project.html", user=User)
 
-    data = {"post": request.form["post"], "user_id": session["user_id"]}
 
-    Project.save(data)
-    return redirect("/dashboard")
+@app.route("/add/budget")
+def view_budget_form():
+    check_session()
+    data = {"id": session["user_id"]}
+    user = User.get_by_id(data)
+    data = {"id": session["user_id"]}
+    return render_template("add_budget_items.html", user=User)
 
 
 # @app.route("/edit/book/<int:id>", methods=["POST", "GET"])

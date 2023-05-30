@@ -1,0 +1,62 @@
+
+               {% include 'header.html' %}
+
+               
+            <div class="app-main__outer" style="padding-right: 1%; padding-left: 1%;">
+               <div class="app-main__inner">
+                
+             <script type="text/javascript" src="{{ url_for('static',filename='cal/jquery.min.js') }}"></script>
+
+              <div class="row" style="padding-right: 5%; padding-left: 5%;">
+                  <div class="col-md-12">
+                     <div class="main-card mb-3 card">
+                        <div class="card-body">
+                           <h5 class="card-title">Add buget Items</h5>
+                           <div class="col-md-6">
+                           <form action="/add/budget" method="POST">
+                              <div class="position-relative row form-group">
+                                 <label for="exampleEmail" class="col-sm-2 col-form-label">Item Cost</label>
+                                 <div class="col-sm-10"><input name="cost_item" type="text" class="form-control"></div>
+                              </div>
+                              <div class="position-relative row form-group">
+                                 <label for="examplePassword" class="col-sm-2 col-form-label">Unit Of Measure</label>
+                                 <div class="col-sm-10"><input name="unit_measure" type="text" class="form-control"></div>
+                              </div>
+                              <div class="position-relative row form-group">
+                                 <label for="examplePassword" class="col-sm-2 col-form-label">Quntity</label>
+                                 <div class="col-sm-10"><input name="qty" id="input1"  type="text" class="form-control"></div>
+                              </div>
+                              <div class="position-relative row form-group">
+                                 <label for="examplePassword" class="col-sm-2 col-form-label">Unit Cost</label>
+                                 <div class="col-sm-10"><input name="unit_cost" id="input2" type="text" class="form-control"></div>
+                              </div>
+                               <div class="position-relative row form-group">
+                                 <label for="exampleEmail" class="col-sm-2 col-form-label">Total Cost</label>
+                                 <div class="col-sm-10"><input name="total_cost" id="total" type="text" class="form-control" readonly></div>
+                              </div>
+                              <div class="position-relative row form-check">
+                                 <div class="col-sm-10 offset-sm-2">
+                                    <button type="Submit" name="Add Budget" class="btn btn-secondary">Submit</button>
+                                 </div>
+                              </div>
+                           </form>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+             {% include 'footer.html' %}
+
+<script>
+$('#input1, #input2').keyup(function() {
+   var product = 1;
+   $('#input1, #input2').each(function() {
+      var value = parseFloat($(this).val());
+      if (!isNaN(value)) {
+         product *= value;
+      }
+   });
+
+   $('#total').val(product);
+});
+</script>

@@ -1,5 +1,5 @@
 from flask_app import app
-from flask_app.controllers import projects, users, likes
+from flask_app.controllers import projects, users, addresses
 
 
 if __name__ == "__main__":
