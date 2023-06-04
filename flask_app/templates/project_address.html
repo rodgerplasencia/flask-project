@@ -1,0 +1,131 @@
+               {% include 'header.html' %}
+         
+                 
+                   
+                      
+                           
+                            <div style="padding-right: 5%; padding-left: 5%;">
+                              <!-- Button trigger modal -->
+                              <button type="button" class="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target="#add_address">
+                              Add Address
+                              </button>
+                              <!-- Button trigger modal -->
+                           </div>
+                       
+                    
+                
+
+                <div class="row" style="padding-right: 5%; padding-left: 5%;">
+                  <div class="col-md-12">
+                     <div class="main-card mb-3 card">
+                        <div class="card-header">Project Address
+                        </div>
+                        <div class="table-responsive">
+                           <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                              <thead>
+                                 <tr>
+                                    <th style="text-align: left;">#</th>
+                                    <th style="text-align: left;">Address</th>
+                                    <th class="text-center">Barangay</th>
+                                    <th class="text-center">Created at</th>
+                                    <th class="text-center">Updated at</th>
+                                    <th class="text-center">Action</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 {% for addresss in address %}
+                                 {% set start = loop.index %}
+                                 <tr>
+                                   <td style="text-align: center;">{{ start }}</td>
+                                   <td style="text-align: left;"></a> {{ addresss.complete_address }}</td>
+                                   <td style="text-align: center;">{{ addresss.barangay }}</td>
+                                   <td style="text-align: center;">{{ addresss.created_at.strftime("%c") }}</td>
+                                   <td style="text-align: center;">{{ addresss.updated_at.strftime("%c") }}</td>
+                                   <td style="text-align: center;">
+                                     <button type="button" class="btn mr-2 mb-2" data-toggle="modal" data-target="#modal{{ address.id }}">Edit</button>
+                                   </td>
+                                 </tr>
+                                 {% endfor %}
+                               </tbody>
+                               
+                               
+                               
+                               
+                               
+                               
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            
+
+
+   {% include 'footer.html' %}
+
+          {% for address in address %}
+<div class="modal fade" id="modal{{address.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="main-card mb-3 card">
+            <div class="card-body">
+               <h5 class="card-title">Change Status</h5>
+               <form class="" action="/updated/status" method="POST">
+                  <h5></h5>
+                  <br>
+                 <input name="id" type="hidden" value="" class="form-control">
+                  
+                  <div class="position-relative form-group">
+                     <label for="status" class="">Select Status</label>
+                     <select name="status" class="form-control">
+                        <option disabled>Select  Status</option>
+                        <optio value="unverified">Unverified</option>
+                        <option value="employee" >Employee</option>
+                        <option value="supervisor">Supervisor</option>
+                        <option value="admin">Admin</option>
+                        <optio value="unverified">Unverified</option>
+                     </select>
+                  </div>
+                  <button type="submit" class="mt-1 btn btn-primary">Update</button>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+ {% endfor %}
+
+
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" id="add_address" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <div class="modal-body">
+           <div class="card-body">
+                           <h5 class="card-title">Project Address</h5>
+                           <form action="add/address" method="POST">
+                              <div class="position-relative row form-group">
+                                 <label for="exampleEmail" class="col-sm-2 col-form-label">Address</label>
+                                 <div class="col-sm-10"><input name="address" id="exampleEmail" type="text" class="form-control"></div>
+                              </div>
+                              <div class="position-relative row form-group">
+                                 <label for="examplePassword" class="col-sm-2 col-form-label">Barangay</label>
+                                 <div class="col-sm-10"><input name="barangay" id="examplePassword"  type="text" class="form-control"></div>
+                              </div>
+                              <div class="position-relative row form-check">
+                                 <div class="col-sm-10 offset-sm-2">
+                                    <button class="btn btn-secondary">Submit</button>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+         </div>
+      </div>
+   </div>
+</div>

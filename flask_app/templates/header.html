@@ -5,7 +5,7 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta http-equiv="Content-Language" content="en">
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-      <title>Coding Dojo Exam</title>
+      <title></title>
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
       <meta name="description" content="">
       <meta name="msapplication-tap-highlight" content="no">
@@ -41,6 +41,24 @@
                      <div class="widget-content p-0">
                         <div class="widget-content-wrapper">
                            <ul class="header-menu nav">
+                               <li class="nav-item" {% if user.status != "admin" %}hidden{% endif %}>
+                                 <a href="/budget" class="nav-link">
+                                 <i class="nav-link-icon fa fa-home"> </i>
+                                 Project Budget
+                                 </a>
+                              </li>
+                              <li class="nav-item" {% if user.status != "admin" %}hidden{% endif %}>
+                                 <a href="/project/address" class="nav-link">
+                                 <i class="nav-link-icon fa fa-home"> </i>
+                                 Project Address
+                                 </a>
+                              </li>
+                           <li class="nav-item" {% if user.status != "admin" %}hidden{% endif %}>
+                              <a href="/project/address" class="nav-link">
+                              <i class="nav-link-icon fa fa-home"> </i>
+                              Project Address
+                              </a>
+                           </li>
                            <li class="nav-item">
                               <a href="/project" class="nav-link">
                               <i class="nav-link-icon fa fa-home"> </i>

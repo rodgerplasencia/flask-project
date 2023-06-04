@@ -40,8 +40,6 @@ class Project:
         query = "INSERT INTO projects (project_name, lot_area, floor_area, location, description, project_revinue,project_address_id)VALUES(%(project_name)s, %(lot_area)s,  %(floor_area)s, %(location)s, %(description)s, %(project_revinue)s, %(project_address_id)s);"
         return connectToMySQL(cls.db_name).query_db(query, data)
 
-    
-
     # @classmethod  # individual na tawag
     # def get_one(cls, data):
     #     query = "SELECT*FROM posts WHERE id=%(id)s;"

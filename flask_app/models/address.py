@@ -12,10 +12,10 @@ class Address:
         self.created_at = db_data["created_at"]
         self.updated_at = db_data["updated_at"]
 
-    # @classmethod
-    # def save_like(cls, data):
-    #     query = "INSERT INTO likes (user_id, post_id, updated_at) VALUES (%(user_id)s, %(post_id)s, NOW());"
-    #     return connectToMySQL(cls.db_name).query_db(query, data)
+    @classmethod
+    def save_add(cls, data):
+        query = "INSERT INTO project_address (complete_address, barangay) VALUES (%(address)s, %(barangay)s);"
+        return connectToMySQL(cls.db_name).query_db(query, data)
 
     @classmethod
     def get_project_address(cls):
@@ -27,6 +27,8 @@ class Address:
             ad.id = result["id"]
             ad.complete_address = result["complete_address"]
             ad.barangay = result["barangay"]
+            ad.created_at = result["created_at"]
+            ad.updated_at = result["updated_at"]
             address.append(ad)
         return address
 

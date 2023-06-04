@@ -3,6 +3,8 @@ from flask_app import app
 from flask_app.models.user import User
 from flask_app.models.project import Project
 from flask_app.models.address import Address
+from flask_app.models.project_budget import Budget
+from flask_app.models.inventory import Inventory
 from flask_bcrypt import Bcrypt
 
 bcrypt = Bcrypt(app)
@@ -69,8 +71,9 @@ def dashboard():
     data = {"id": session["user_id"]}
     data_id = {"user_id": session["user_id"]}
     user = User.get_by_id(data)
+    inventories = Inventory.get_inventory()
 
-    return render_template("dashboard.html", user=user)
+    return render_template("dashboard.html", user=user, inventories=inventories)
 
 
 @app.route("/logout")
@@ -84,8 +87,8 @@ def logout():
 def employees_dasbord():
     check_session()
     data = {"id": session["user_id"]}
-    employees = User.get_employee_status()
     user = User.get_by_id(data)
+    employees = User.get_employee_status()
     return render_template("employees_status.html", employees=employees, user=user)
 
 

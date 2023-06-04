@@ -1,51 +1,119 @@
+{% include 'header.html' %}
 
-               {% include 'header.html' %}
+         
+                 
+                   
+                      
+                           
+<div style="padding-right: 5%; padding-left: 5%;">
+  <!-- Button trigger modal -->
+  <button type="button" class="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target="#add_budget">
+  Add Budget
+  </button>
+  <!-- Button trigger modal -->
+</div>
 
-               
-            <div class="app-main__outer" style="padding-right: 1%; padding-left: 1%;">
-               <div class="app-main__inner">
-                
-             <script type="text/javascript" src="{{ url_for('static',filename='cal/jquery.min.js') }}"></script>
 
-              <div class="row" style="padding-right: 5%; padding-left: 5%;">
-                  <div class="col-md-12">
-                     <div class="main-card mb-3 card">
-                        <div class="card-body">
-                           <h5 class="card-title">Add buget Items</h5>
-                           <div class="col-md-6">
-                           <form action="/add/budget" method="POST">
-                              <div class="position-relative row form-group">
-                                 <label for="exampleEmail" class="col-sm-2 col-form-label">Item Cost</label>
-                                 <div class="col-sm-10"><input name="cost_item" type="text" class="form-control"></div>
-                              </div>
-                              <div class="position-relative row form-group">
-                                 <label for="examplePassword" class="col-sm-2 col-form-label">Unit Of Measure</label>
-                                 <div class="col-sm-10"><input name="unit_measure" type="text" class="form-control"></div>
-                              </div>
-                              <div class="position-relative row form-group">
-                                 <label for="examplePassword" class="col-sm-2 col-form-label">Quntity</label>
-                                 <div class="col-sm-10"><input name="qty" id="input1"  type="text" class="form-control"></div>
-                              </div>
-                              <div class="position-relative row form-group">
-                                 <label for="examplePassword" class="col-sm-2 col-form-label">Unit Cost</label>
-                                 <div class="col-sm-10"><input name="unit_cost" id="input2" type="text" class="form-control"></div>
-                              </div>
-                               <div class="position-relative row form-group">
-                                 <label for="exampleEmail" class="col-sm-2 col-form-label">Total Cost</label>
-                                 <div class="col-sm-10"><input name="total_cost" id="total" type="text" class="form-control" readonly></div>
-                              </div>
-                              <div class="position-relative row form-check">
-                                 <div class="col-sm-10 offset-sm-2">
-                                    <button type="Submit" name="Add Budget" class="btn btn-secondary">Submit</button>
-                                 </div>
-                              </div>
-                           </form>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-             {% include 'footer.html' %}
+
+
+<div class="row" style="padding-right: 5%; padding-left: 5%;">
+<div class="col-md-12">
+<div class="main-card mb-3 card">
+<div class="card-header">Project Budget
+   <div class="btn-actions-pane-right">
+      <div role="group" class="btn-group-sm btn-group">
+         <a href="/print" class="active btn btn-light">Print</a>
+         <a href="/export" class="active btn btn-success">Export to Excel</a>
+      </div>
+  </div>
+</div>
+<div class="table-responsive">
+<table class="align-middle mb-0 table table-borderless table-striped table-hover">
+  <thead>
+     <tr>
+        <th style="text-align: left;">#</th>
+        <th style="text-align: left;">Project Budget</th>
+        <th class="text-center">Quantity</th>
+        <th class="text-center">Unit Cost</th>
+        <th class="text-center">Total Cost</th>
+        <th class="text-center">Created at</th>
+        <th class="text-center">Updated at</th>
+     </tr>
+  </thead>
+  <tbody>
+     {% for budget in budgets %}
+     {% set start = loop.index %}
+     <tr>
+       <td style="text-align: center;">{{ start }}</td>
+       <td style="text-align: left;"> {{ budget.project_budgetscol }}</td>
+       <td style="text-align: center;">{{ budget.project_budget_qty }}</td>
+       <td style="text-align: center;">&#8369; {{ budget.project_budget_unit_cost }}</td>
+       <td style="text-align: center;">&#8369; {{ budget.project_budget_total_cost }}</td>
+       <td style="text-align: center;">{{ budget.created_at.strftime("%c") }}</td>
+       <td style="text-align: center;">{{ budget.updated_at.strftime("%c") }}</td>
+     </tr>
+     {% endfor %}
+   </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+
+
+{% include 'footer.html' %}
+
+
+
+
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" id="add_budget" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-body">
+<div class="card-body">
+<h5 class="card-title">Add Budget</h5>
+<script type="text/javascript" src="{{ url_for('static',filename='cal/jquery.min.js') }}"></script>
+<form action="/save/budget" method="POST">
+   <div class="position-relative row form-group">
+      <label for="exampleEmail" class="col-sm-2 col-form-label">Item Cost</label>
+      <div class="col-sm-10"><input name="inventory_items_id" value="1" type="number" class="form-control"></div>
+   </div>
+   <div class="position-relative row form-group">
+      <label for="examplePassword" class="col-sm-2 col-form-label">Unit Of Measure</label>
+      <div class="col-sm-10"><input name="project_budgetscol" type="text" class="form-control"></div>
+   </div>
+   <div class="position-relative row form-group">
+      <label for="examplePassword" class="col-sm-2 col-form-label">Quantity</label>
+      <div class="col-sm-10"><input name="qty" id="input1"  type="text" class="form-control"></div>
+   </div>
+   <div class="position-relative row form-group">
+      <label for="examplePassword" class="col-sm-2 col-form-label">Unit Cost</label>
+      <div class="col-sm-10"><input name="unit_cost" id="input2" type="text" class="form-control"></div>
+   </div>
+    <div class="position-relative row form-group">
+      <label for="exampleEmail" class="col-sm-2 col-form-label">Total Cost</label>
+      <div class="col-sm-10"><input name="total_cost" id="total" type="text" class="form-control" readonly></div>
+   </div>
+   <div class="position-relative row form-check">
+      <div class="col-sm-10 offset-sm-2">
+         <button type="Submit" name="Add Budget" class="btn btn-secondary">Submit</button>
+      </div>
+   </div>
+</form>
+</div>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>
+</div>
+</div>
+</div>  
+
+
+
 
 <script>
 $('#input1, #input2').keyup(function() {

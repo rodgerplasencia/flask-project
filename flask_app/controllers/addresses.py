@@ -5,6 +5,7 @@ from flask_app import app
 from flask_app.models.user import User
 from flask_app.models.project import Project
 from flask_app.models.address import Address
+from flask_app.models.project_budget import Budget
 
 
 def check_session():
@@ -12,11 +13,32 @@ def check_session():
         return redirect("/logout")
 
 
-@app.route("/post/like/<int:id>")
-def post_like(id):
-    check_session()
+@app.route("/project/address")
+def view_address():
+    data = {"id": session["user_id"]}
+    user = User.get_by_id(data)
+    data = {"id": session["user_id"]}
+    address = Address.get_project_address()
+    return render_template("project_address.html", user=user, address=address)
 
-    data = {"user_id": session["user_id"], "post_id": id}
-    # Like.save_like(data)
-    Like.validate_likes(data)
-    return redirect("/dashboard")
+
+@app.route("/project/add/address", methods=["POST"])
+def create_address():
+    check_session()
+    data = {
+        "address": request.form["address"],
+        "barangay": request.form["barangay"],
+    }
+    Address.save_add(data)
+    data_user = {"id": session["user_id"]}
+    user = User.get_by_id(data_user)
+    return redirect("/project/address")
+
+
+@app.route("/print")
+def view_print():
+    data = {"id": session["user_id"]}
+    user = User.get_by_id(data)
+    data = {"id": session["user_id"]}
+    budgets = Budget.get_budget()
+    return render_template("data-print.html", user=user, budgets=budgets)

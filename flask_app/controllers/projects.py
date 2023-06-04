@@ -3,9 +3,12 @@ import re
 from flask_bcrypt import Bcrypt
 
 from flask_app import app
+import os
+import pandas as pd
 from flask_app.models.user import User
 from flask_app.models.project import Project
 from flask_app.models.address import Address
+from flask_app.models.project_budget import Budget
 
 
 def check_session():
@@ -41,82 +44,53 @@ def add_project():
     return render_template("project.html", user=User)
 
 
-@app.route("/add/budget")
+@app.route("/save/budget", methods=["POST"])
+def save_budgets():
+    check_session()
+    budget_data = {
+        "inventory_items_id": request.form["inventory_items_id"],
+        "project_budgetscol": request.form["project_budgetscol"],
+        "project_budget_qty": request.form["qty"],
+        "project_budget_unit_cost": request.form["unit_cost"],
+        "project_budget_total_cost": request.form["total_cost"],
+    }
+    Budget.save_budget(budget_data)
+    return redirect("/budget")
+
+
+@app.route("/budget")
 def view_budget_form():
     check_session()
     data = {"id": session["user_id"]}
     user = User.get_by_id(data)
-    data = {"id": session["user_id"]}
-    return render_template("add_budget_items.html", user=User)
+    budgets = Budget.get_budget()
+    return render_template("add_budget_items.html", user=user, budgets=budgets)
 
 
-# @app.route("/edit/book/<int:id>", methods=["POST", "GET"])
-# def edit_book(id):
-#     check_session()
+@app.route("/export")
+def export():
+    budgets = Budget.get_budget()
+    data = []
 
-#     data = {"id": id}
-#     user_data = {"id": session["user_id"]}
-#     return render_template(
-#         "edit_book.html", edit=Book.get_one(data), user=User.get_by_id(user_data)
-#     )
+    for budget in Budget.get_budget():
+        data.append(
+            [
+                budget.inventory_items_id,
+                budget.project_budgetscol,
+                budget.project_budget_qty,
+                budget.project_budget_unit_cost,
+            ]
+        )
 
-
-# @app.route("/update/book", methods=["POST"])
-# def update_book():
-#     check_session()
-#     if not Book.validate_book(request.form):
-#         return redirect("/new/book")
-#     data = {
-#         "title": request.form["title"],
-#         "description": request.form["description"],
-#         "id": request.form["id"],
-#     }
-#     Book.update(data)
-#     return redirect("/dashboard")
-
-
-# @app.route("/book/<int:id>")
-# def show_book(id):
-#     check_session()
-#     data = {"id": id}
-#     book_id = {"book_id": id}
-#     user_data = {"id": session["user_id"]}
-#     book_likers = Like.get_likers_book(book_id)
-#     return render_template(
-#         "book_details.html",
-#         book=Book.get_one(data),
-#         user=User.get_by_id(user_data),
-#         book_likers=book_likers,
-#     )
-
-
-# @app.route("/post/delete/<int:id>", methods=["POST", "GET"])
-# def delete_post(id):
-#     check_session()
-#     data = {"id": id}
-#     Post.delete(data)
-#     return redirect("/dashboard")
-
-
-# @app.route("/post/likes/<int:id>", methods=["POST", "GET"])
-# def liked_post(id):
-#     check_session()
-#     data = {"id": id}
-#     one_post = Post.get_one(data)
-#     return render_template("post_likes.html", one_post=one_post)
-
-
-# @app.route("/viewer/<int:id>")
-# def show_liker(id):
-#     check_session()
-#     data = {"id": id}
-#     data_book_id = {"book_id": id}
-#     book_id = {"book_id": id}
-#     user_data = {"id": session["user_id"]}
-#     likers = Like.get_likers_book(data_book_id)
-#     return render_template(
-#         "viewer.html",
-#         book=Book.get_one(data),
-#         user=User.get_by_id(user_data),
-#         book_likers=likers,
-#     )
+    df = pd.DataFrame(
+        data,
+        columns=[
+            "inventory_items_id",
+            "project_budgetscol",
+            "project_budget_qty",
+            "project_budget_unit_cost",
+        ],
+    )
+    directory = "download"
+    df.to_excel(os.path.join(directory, "Budget-table.xlsx"), index=False)
+    return redirect("/budget")

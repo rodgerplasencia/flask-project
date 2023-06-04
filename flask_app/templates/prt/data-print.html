@@ -1,0 +1,152 @@
+<html>
+
+
+<?php
+include('../php_includes/check_login.php');
+include('../php_includes/connect.php');
+date_default_timezone_set('Asia/Manila');
+?>
+
+<?php
+require_once("../configuration.php"); 
+?>
+
+
+<head>
+	<link rel="icon" href="../assets/images/favicon.png" type="image/png" sizes="16x16">
+		<title> Apartment Rentee Record.</title>
+		<style>
+		
+		
+.container {
+	width:75%;
+	margin:auto;
+}
+		
+.table {
+	border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 8px;
+}	
+
+.table-striped tbody > tr:nth-child(odd) > td,
+.table-striped tbody > tr:nth-child(odd) > th {
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.table th, .table td {
+  padding: 5px;
+  line-height: 14px;
+  text-align: left;
+  border-top: 1px solid #ddd;
+}
+
+@media print{
+#print {
+display:none;
+}
+}
+
+#print {
+	width: 90px;
+    height: 30px;
+    font-size: 18px;
+    background: white;
+    border-radius: 4px;
+	margin-left:11px;
+	cursor:hand;
+}
+		
+		</style>
+<script>
+function printPage() {
+    window.print();
+}
+</script>
+		
+</head>
+
+
+<body>
+	<div class = "container">
+		<div id = "header">
+		<br/>
+<button type="submit" id="print" onclick="printPage()">Print</button>
+			<p style = "margin-left:30px; margin-top:40px; font-size:12pt; font-weight:bold;">Tenant list by Month of <?php echo date('F'); ?>;   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <div align="right">
+		<b style="color:black;">Date Prepared:</b>
+		<?php include('current-date.php'); ?>
+        </div>			
+		<br/>
+
+						<table class="table">
+					<tr>
+            <th>#</th>
+						<th style="text-align: left;">Name</th>
+						<th style="text-align: center;">Contact Number</th>
+            <th style="text-align: center;">Email</th>
+            <th style="text-align: center;">Previous Address</th>
+            <th style="text-align: center;">Civil Status</th>
+            <th style="text-align: center;">Room Code</th>
+            <th style="text-align: center;">Rent Fee</th>
+            <th style="text-align: center;">Date Started</th>
+					</tr>
+				<?php
+					 $query = mysqli_query($conn,"SELECT*FROM renters JOIN rooms ON renters.room_id=rooms.id JOIN payments_account ON renters.payment_account_id=payments_account.id  ")or die(mysqli_error($conn)); 
+    if(mysqli_num_rows($query)>0){
+                    $i=1;
+    while($row = mysqli_fetch_array($query)){
+
+          $renter_id = $row['id'];
+          $tenant_name = $row['name'];
+          $mobile = $row['contactnumber'];
+          $rent_date = $row['date_started'];
+          $due_date = $row['due_date'];
+          $room_id = $row['room_id'];
+          $rent_id = $row['payment_account_id'];
+          $previous_address = $row['previous_address'];
+          $civil_status = $row['civil_status'];
+          $email = $row['email'];
+          $room_code = $row['roomnumber'];
+          $rent_fee = $row['monthly_rent'];
+                     
+
+				?>
+					<tr>
+            <td><?php echo  $i; ?></td>
+            <td style="text-align: left;"><?php echo $tenant_name; ?></td>
+            <td style="text-align: center;"><?php echo $mobile; ?></td>
+            <td style="text-align: center;"><?php echo $email; ?></td>
+						<td style="text-align: center;"><?php echo $previous_address; ?></td>
+						<td style="text-align: center;"><?php echo $civil_status; ?></td>
+            <td style="text-align: center;"><?php echo $room_code; ?></td>
+            <td style="text-align: center;"><?php echo $rent_fee; ?></td>
+            <td style="text-align: center;"><?php echo date("M d, Y h:i:s A", strtotime ($rent_date)); ?></td>
+						
+					</tr>
+					<?php
+                      $i++;
+                    }
+                  }	?>
+				</table>
+
+<br />
+<br />
+
+<b style="color:black; font-size:15px;">
+Prepared By: Administrator.
+</b>
+
+
+			</div>
+	
+	
+	
+	
+
+	</div>
+</body>
+
+
+</html>

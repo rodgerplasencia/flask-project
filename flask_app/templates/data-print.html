@@ -1,0 +1,120 @@
+<html>
+
+
+
+<head>
+	<link rel="icon" href="{{ url_for('static',filename='prt_assets/assets/images/favicon.png') }}" type="image/png" sizes="16x16">
+		<title>Data Print</title>
+		<style>
+		
+		
+.container {
+	width:75%;
+	margin:auto;
+}
+		
+.table {
+	border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 8px;
+}	
+
+.table-striped tbody > tr:nth-child(odd) > td,
+.table-striped tbody > tr:nth-child(odd) > th {
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.table th, .table td {
+  padding: 5px;
+  line-height: 14px;
+  text-align: left;
+  border-top: 1px solid #ddd;
+}
+
+@media print{
+#print {
+display:none;
+}
+}
+
+#print {
+	width: 90px;
+    height: 30px;
+    font-size: 18px;
+    background: white;
+    border-radius: 4px;
+	margin-left:11px;
+	cursor:hand;
+}
+		
+		</style>
+<script>
+function printPage() {
+    window.print();
+}
+</script>
+		
+</head>
+
+
+<body>
+	<div class = "container">
+		<div id = "header">
+		<br/>
+<button type="submit" id="print" onclick="printPage()">Print</button>
+			<p style = "margin-left:30px; margin-top:40px; font-size:12pt; font-weight:bold;">Data list by Month of ::;   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <div align="right">
+		<b style="color:black;">Date Prepared:</b>
+    {% include 'current-date.html' %}
+        </div>			
+		<br/>
+
+						<table class="table">
+              <thead>
+                <tr>
+                   <th style="text-align: left;">#</th>
+                   <th style="text-align: left;">Project Budget</th>
+                   <th class="text-center">Quantity</th>
+                   <th class="text-center">Unit Cost</th>
+                   <th class="text-center">Total Cost</th>
+                   <th class="text-center">Created at</th>
+                   <th class="text-center">Updated at</th>
+                </tr>
+             </thead>
+             <tbody>
+                {% for budget in budgets %}
+                {% set start = loop.index %}
+                <tr>
+                  <td style="text-align: center;">{{ start }}</td>
+                  <td style="text-align: left;"> {{ budget.project_budgetscol }}</td>
+                  <td style="text-align: center;">{{ budget.project_budget_qty }}</td>
+                  <td style="text-align: center;">&#8369; {{ budget.project_budget_unit_cost }}</td>
+                  <td style="text-align: center;">&#8369; {{ budget.project_budget_total_cost }}</td>
+                  <td style="text-align: center;">{{ budget.created_at.strftime("%c") }}</td>
+                  <td style="text-align: center;">{{ budget.updated_at.strftime("%c") }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+				
+				</table>
+
+<br />
+<br />
+
+<b style="color:black; font-size:15px;">
+Prepared By: Cost Management Application.
+</b>
+
+
+			</div>
+	
+	
+	
+	
+
+	</div>
+</body>
+
+
+</html>
