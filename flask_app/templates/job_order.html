@@ -1,0 +1,127 @@
+
+               {% include 'header.html' %}
+              
+               <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+   
+
+                                 <div class="row" style="padding-right: 5%; padding-left: 5%;">
+                                    <div class="col-md-12">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-header"> Job Order
+                                                 <!-- <div class="btn-actions-pane-right">
+                                                   <div role="group" class="btn-group-sm btn-group">
+                                                     <button type="button" class="btn mr-2 mb-2 btn-primary" data-toggle="modal" data-target="#add_job">Create A Job </button>
+                                                   </div>
+                                               </div> -->
+                                            </div>
+                                            <div class="card-body">
+<div style="padding-bottom: 25px;">  
+ {% if status == 'init' %}            
+<form action="/job_orders/new" method="POST"  id="projectNameForm">
+   <div class="position-relative row form-group">
+      <label for="exampleEmail" class="col-sm-2 col-form-label" style="font-weight: bold;">Create A Job</label>
+      <div class="col-sm-3"> <select  id="project_name" name="project_id" class="form-control">
+                                <option value="" > -- Please Select -- </option>
+                                {% for project in projects %}
+                                    <option value="{{ project.id }}">{{ project.name }}</option>
+                                {% endfor %}
+                            </select>
+        </div>
+   </div>
+    {% with errors = get_flashed_messages(category_filter=['project_name']) %}
+                            {% if errors %}
+                                <p class="error">{{ errors[0] }}</p>
+                            {% endif %}
+                        {% endwith %}
+   <div class="position-relative row form-check">
+      <div class="col-sm-10 offset-sm-2">
+        
+      </div>
+   </div>
+</form>
+ {% endif %}
+</div>
+
+
+
+
+
+                                                 
+                                                <div class="table-responsive">
+                                                <table class="align-middle mb-0 table table-borderless table-striped table-hover" >
+                                                   <thead>
+                                                      <tr >
+                                                         <th>#</th>
+                                                          <th class="text-center">Job Order Date</th>
+                                                          <th class="text-center">Document No.</th>
+                                                          <th class="text-center">Project Name</th>
+                                                          <th class="text-center">Total Cost</th>
+                                                          <th class="text-center">Status</th>
+                                                          <th class="text-left">Action</th>
+                                                      </tr>
+                                                   </thead>
+                                                   <tbody>
+                                                      {% for document in documents %}
+                                                      {% set start = loop.index %}
+                                                          <tr>
+                                                            <td style="text-align: left;">{{start}}</td>
+                                                            <td style="text-align: center;">{{ document.created_at.strftime("%m/%d/%Y") }}</td>
+                                                            <td style="text-align: center;">{{ document.document_number }}</td>
+                                                            <td style="text-align: center;">{{ document.project_name }}</td>
+                                                            <td style="text-align: center;">&#8369; {{ '{:,.2f}'.format(document.total_cost) }}</td>
+                                                              {% if document.status == 'pending' %}
+                                                                  <td style="text-align: center;">Pending Approval</td>
+                                                              {% elif document.status == 'approved' %}
+                                                                  <td style="text-align: center;">Approved</td>
+                                                              {% endif %}
+                                                            <td class="d-flex align-items-center gap-4">
+                                                                  {% if document.status == 'pending' %}
+                                                                      <a href="/job_orders/pending/documents/{{ document.id }}">view</a>
+                                                                  {% elif document.status == 'approved' %}
+                                                                      <a href="/job_orders/approved/documents/{{ document.id }}">view</a>
+                                                                  {% endif %}
+                                                              </td>
+                                                          </tr>
+                                                      {% endfor %}
+                                                  </tbody>
+                                                </table>
+                                             </div>
+                                                  
+                                        </div>
+                                    </div> 
+                            </div>
+
+
+
+   
+             {% include 'footer.html' %}
+
+
+
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" id="add_job" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-sm">
+<div class="modal-content">
+<div class="modal-body">
+<div class="card-body">
+<h5 class="card-title">Select Project</h5>
+<form action="/save/budget" method="POST">
+   <div class="position-relative row form-group">
+      <label for="exampleEmail" class="col-sm-2 col-form-label">Item Cost</label>
+      <div class="col-sm-10"><input name="inventory_items_id" value="1" type="number" class="form-control"></div>
+   </div>
+   <div class="position-relative row form-check">
+      <div class="col-sm-10 offset-sm-2">
+         <button type="Submit" name="Add Budget" class="btn btn-secondary">Submit</button>
+      </div>
+   </div>
+</form>
+</div>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>
+</div>
+</div>
+</div>

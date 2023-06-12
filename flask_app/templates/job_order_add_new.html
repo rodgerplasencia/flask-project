@@ -1,0 +1,278 @@
+
+               {% include 'header.html' %}
+              
+               <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+   
+
+                                 <div class="row" style="padding-right: 5%; padding-left: 5%;">
+                                    <div class="col-md-12">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-header"> Job Order
+                                                 
+                                            </div>
+                                            <div class="card-body">
+<div style="padding-bottom: 25px;"> 
+<div class="col d-flex flex-column gap-3">
+                {% if status != 'init' %}
+                      <div class="row">
+                        <p class="col-4">Project Name:</p>
+                        <p class="col-8 textarea">{{ document.project.name }}</p>
+                    </div>
+                {% endif %}
+            </div> 
+ <div class="col d-flex flex-column gap-3">
+                {% if status != 'init' %}
+                    <div class="row">
+                        <p class="col-4">Location:</p>
+                        <p class="col-8 textarea">{{ document.project.location }}</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col d-flex flex-column gap-3">
+                {% if status != 'init' %}
+                    <div class="row">
+                        <p class="col-4">Document No.:</p>
+                        <p class="col-8 textarea">{{ document.document_number }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+  {% if status != 'init' %}
+            <div class="mt-4">
+                <!-- Button trigger modal -->
+                {% if status == 'new' %}
+                    <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#jobOrderModal">Add Job Order Item</button>
+                {% endif %}
+
+
+
+                                                 
+                                                <div class="table-responsive">
+                                                <table class="align-middle mb-0 table table-borderless table-striped table-hover" >
+                                                   <thead>
+                                                      <tr >
+                                                         <th>#</th>
+                                                          <th class="text-center">Item Cost</th>
+                                                          <th class="text-center">Unit Of Measure</th>
+                                                          <th class="text-center">Quantity</th>
+                                                          <th class="text-center">Unit Cost</th>
+                                                          <th class="text-center">Total Cost</th>
+                                                          {% if status == 'new' %}
+                                                          <th class="text-center">Action</th>
+                                                          {% endif %}
+                                                          
+                                                      </tr>
+                                                   </thead>
+                                                   <tbody>
+                                                      {% for document in documents %}
+                                                      {% set start = loop.index %}
+                                                          <tr>
+                                                            <td style="text-align: left;">{{start}}</td>
+                                                            <td style="text-align: center;">{{ job_order.project_budget.inventory_item.name }}</td>
+                                                            <td style="text-align: center;">{{ job_order.project_budget.inventory_item.unit_of_measure }}</td>
+                                                            <td style="text-align: center;">{{ job_order.quantity }}</td>
+                                                            <td style="text-align: center;">&#8369; {{ '{:,.2f}'.format(job_order.project_budget.inventory_item.unit_cost) if job_order and job_order.project_budget and job_order.project_budget.inventory_item and job_order.project_budget.inventory_item.unit_cost else 0.0 }}</td>
+                                                              
+                                                            <td style="text-align: center;">&#8369; {{ '{:,.2f}'.format(job_order.project_budget.inventory_item.unit_cost if job_order and job_order.project_budget and job_order.project_budget.inventory_item and job_order.project_budget.inventory_item.unit_cost is not None else 0.0) }}</td>
+                                                             {% if status == 'new' %}
+                                                             <td class="d-flex align-items-center gap-4">
+                                                            <form action="/job_orders/new/documents/{{ document.id }}/delete/job_orders/{{ job_order.id }}" method="POST">
+                                                            <input type="submit" class="btn btn-link" style="padding: 0;" value="remove"/>
+                                                     </form>
+                                                     </td>
+                                                     {% endif %}
+                                                          </tr>
+
+                                                        <tr>
+                                                        <td colspan="9" align="center">No record yet</td>
+                                                        </tr>
+
+                                                      {% endfor %}
+
+                                                       <tr>
+                                                        <td colspan="9" align="center">No record yet</td>
+                                                        </tr>
+
+
+                                                    {% endif %}
+                                                  </tbody>
+
+
+                                                  
+
+
+                                                 
+
+
+                                                </table>
+                                             </div>
+                                                  
+                                        </div>
+                                    </div> 
+                            </div>
+
+
+
+   
+            
+
+
+
+<!-- 
+<div class="modal fade " id="jobOrderModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <p>Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+            <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+         </div>
+      </div>
+   </div>
+</div> -->
+
+
+ {% include 'footer.html' %}
+
+
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" id="jobOrderModal" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="exampleModalLabel">Items Cost</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+<div class="card-body">
+<h5 class="card-title">Items Cost</h5>
+<form class="" action="/job_orders/new/documents/{{ document.id }}" method="POST">
+   
+   <div class="position-relative form-group">
+     <select class="form-control" id="item_cost" name="project_budget_id">
+        <option value=""  >-- Please Select --</option>
+        {% for project_budget in project_budgets %}
+            <option value="{{ project_budget.id }}">{{ project_budget.inventory_item.name }}</option>
+        {% endfor %}
+    </select>
+   </div>
+    {% with errors = get_flashed_messages(category_filter=['item_cost']) %}
+        {% if errors %}
+            <p class="error">{{ errors[0] }}</p>
+        {% endif %}
+    {% endwith %}
+
+    <div class="position-relative form-group"><label class="">Unit Of Measure</label><input name="unit_of_measure" id="unit_of_measure"  type="text" class="form-control" readonly></div>
+   <div class="position-relative form-group"><label  class="">Quantity</label><input name="quantity" id="quantity" type="number"
+      class="form-control"></div>
+     <div class="position-relative form-group"><label  class="">Available Supply</label><input name="avl_supply"  type="number"
+      class="form-control" readonly ></div>
+
+     <div class="position-relative form-group"><label  class="">Total Cost</label><input name="total_cost"  type="number" id="total_cost"
+      class="form-control" readonly ></div>
+
+   <button class="mt-1 btn btn-primary">Submit</button>
+</form>
+</div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary">Save changes</button>
+ </div>
+</div>
+</div>
+</div>
+
+
+
+    <div class="modal-body">
+    <script type="text/javascript" src="{{ url_for('static',filename='cal/jquery.min.js') }}"></script>
+        <form action="/job_orders/new/documents/{{ document.id }}" method="POST" class="row" id="jobOrderForm">
+            <div class="col d-flex flex-column gap-3">
+                <div class="row">
+                    <label class="col-4 col-form-label" for="item_cost">Item Cost:</label>
+                    <div class="col-8">
+                        <select class="form-select" id="item_cost" name="project_budget_id">
+                            <option value="">-- Please Select --</option>
+                            {% for project_budget in project_budgets %}
+                                <option value="{{ project_budget.id }}">{{ project_budget.inventory_item.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% with errors = get_flashed_messages(category_filter=['item_cost']) %}
+                        {% if errors %}
+                            <p class="error">{{ errors[0] }}</p>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+                <div class="row">
+                    <label class="col-4 col-form-label" for="unit_of_measure">Unit of Measure:</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="unit_of_measure" name="unit_of_measure" disabled/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-4 col-form-label" for="quantity">Quantity:</label>
+                    <div class="col-8">
+                        <input type="number" class="form-control" id="quantity" name="quantity" min="1"/>
+                    </div>
+                    {% with errors = get_flashed_messages(category_filter=['quantity']) %}
+                        {% if errors %}
+                            <p class="error">{{ errors[0] }}</p>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+                <div class="row">
+                    <label class="col-4 col-form-label" for="unit_cost">Unit Cost:</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="unit_cost" name="unit_cost" disabled/>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-4 col-form-label" for="unit_cost">Available Supply:</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="avl_supply" name="avl_supply" disabled/>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <label class="col-4 col-form-label" for="total_cost">Total Cost:</label>
+                    <div class="col-8">
+                        <input type="text" class="form-control" id="total_cost" name="total_cost" disabled/>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+<script>
+$('#input1, #input2').keyup(function() {
+   var product = 1;
+   $('#input1, #input2').each(function() {
+      var value = parseFloat($(this).val());
+      if (!isNaN(value)) {
+         product *= value;
+      }
+   });
+
+   $('#total').val(product);
+});
+</script>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <title>Create Job Order</title>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <div class="container card my-5" style="padding: 1%;">
+        <h5 class="card-title mb-5">Create Job Order</h5>
+        <div class="row">
+            <div class="col d-flex flex-column gap-3">
+                {% if status == 'init' %}
+                    <form action="/job_orders/new" method="POST" class="row" id="projectNameForm">
+                        <label class="col-4 col-form-label" for="project_name">Project Name:</label>
+                        <div class="col-8">
+                            <select class="form-select" id="project_name" name="project_id">
+                                <option value="">-- Please Select --</option>
+                                {% for project in projects %}
+                                    <option value="{{ project.id }}">{{ project.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        {% with errors = get_flashed_messages(category_filter=['project_name']) %}
+                            {% if errors %}
+                                <p class="error">{{ errors[0] }}</p>
+                            {% endif %}
+                        {% endwith %}
+                    </form>
+                {% else %}
+                    <div class="row">
+                        <p class="col-4">Project Name:</p>
+                        <p class="col-8 textarea">{{ document.project.name }}</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col d-flex flex-column gap-3">
+                {% if status != 'init' %}
+                    <div class="row">
+                        <p class="col-4">Location:</p>
+                        <p class="col-8 textarea">{{ document.project.location }}</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col d-flex flex-column gap-3">
+                {% if status != 'init' %}
+                    <div class="row">
+                        <p class="col-4">Document No.:</p>
+                        <p class="col-8 textarea">{{ document.document_number }}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if status != 'init' %}
+            <div class="mt-4">
+                <!-- Button trigger modal -->
+                {% if status == 'new' %}
+                    <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#jobOrderModal">Add Job Order Item</button>
+                {% endif %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr class="table-dark">
+                            <th>Item Cost</th>
+                            <th>Unit of Measure</th>
+                            <th>Quantity</th>
+                            <th>Unit Cost</th>
+                            <th>Total Cost</th>
+                            {% if status == 'new' %}
+                                <th>Action</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if document.job_orders[0].id != None %}
+                            {% for job_order in document.job_orders %}
+                                <tr>
+                                    <td>{{ job_order.project_budget.inventory_item.name }}</td>
+                                    <td>{{ job_order.project_budget.inventory_item.unit_of_measure }}</td>
+                                    <td>{{ job_order.quantity }}</td>
+                                    <td>&#8369; {{ '{:,.2f}'.format(job_order.project_budget.inventory_item.unit_cost) }}</td>
+                                    <td>&#8369; {{ '{:,.2f}'.format(job_order.quantity * job_order.project_budget.inventory_item.unit_cost) }}</td>
+                                    {% if status == 'new' %}
+
+
+
+                                   
+
+                                        <td class="d-flex align-items-center gap-4">
+                                            <form action="/job_orders/new/documents/{{ document.id }}/delete/job_orders/{{ job_order.id }}" method="POST">
+                                                <input type="submit" class="btn btn-link" style="padding: 0;" value="remove"/>
+                                            </form>
+                                        </td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row my-4">
+                <div class="col">
+                    {% if status == 'new' and document.job_orders[0].id != None %}
+                        <form action="/job_orders/pending/documents/{{ document.id }}" method="POST">
+                            <input type="submit" class="btn btn-success" value="Submit for Approval"/>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="col d-flex justify-content-center">
+                    {% if status == 'pending' and user.status == 'supervisor' %}
+                        <form action="/job_orders/approved/documents/{{ document.id }}" method="POST">
+                            <input type="submit" class="btn btn-success" value="Approve Job Order"/>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="col"></div>
+            </div>
+
+            {% if project_budgets %}
+            <div>
+                {% for project_budget in project_budgets %}
+                    <input type="hidden" class="project_budget_id" value="{{ project_budget.id }}"/>
+                    <input type="hidden" class="unit_of_measure" value="{{ project_budget.inventory_item.unit_of_measure }}"/>
+                    <input type="hidden" class="unit_cost" value="{{ project_budget.inventory_item.unit_cost }}"/>
+                {% endfor %}
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="jobOrderModal" tabindex="-1" aria-labelledby="jobOrderModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="box-shadow: none;">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="jobOrderModalLabel">Job Order Item</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="/job_orders/new/documents/{{ document.id }}" method="POST" class="row" id="jobOrderForm">
+                            <div class="col d-flex flex-column gap-3">
+                                <div class="row">
+                                    <label class="col-4 col-form-label" for="item_cost">Item Cost:</label>
+                                    <div class="col-8">
+                                        <select class="form-select" id="item_cost" name="project_budget_id">
+                                            <option value="">-- Please Select --</option>
+                                            {% for project_budget in project_budgets %}
+                                                <option value="{{ project_budget.id }}">{{ project_budget.inventory_item.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    {% with errors = get_flashed_messages(category_filter=['item_cost']) %}
+                                        {% if errors %}
+                                            <p class="error">{{ errors[0] }}</p>
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+
+                                <div class="row">
+                                    <label class="col-4 col-form-label" for="unit_of_measure">Unit of Measure:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="unit_of_measure" name="unit_of_measure" disabled/>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <label class="col-4 col-form-label" for="quantity">Quantity:</label>
+                                    <div class="col-8">
+                                        <input type="number" class="form-control" id="quantity" name="quantity" min="1"/>
+                                    </div>
+                                    {% with errors = get_flashed_messages(category_filter=['quantity']) %}
+                                        {% if errors %}
+                                            <p class="error">{{ errors[0] }}</p>
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+
+                                <div class="row">
+                                    <label class="col-4 col-form-label" for="unit_cost">Unit Cost:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="unit_cost" name="unit_cost" disabled/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-4 col-form-label" for="unit_cost">Available Supply:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="avl_supply" name="avl_supply" disabled/>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <label class="col-4 col-form-label" for="total_cost">Total Cost:</label>
+                                    <div class="col-8">
+                                        <input type="text" class="form-control" id="total_cost" name="total_cost" disabled/>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Add" form="jobOrderForm"/>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    {% include 'footer.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script src="{{ url_for('static', filename='job_orders/script.js') }}" type="text/javascript"></script>
+</body>
+</html>

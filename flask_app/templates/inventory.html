@@ -1,0 +1,170 @@
+
+               {% include 'header.html' %}
+              
+               <div class="tab-pane tabs-animation fade show active" id="tab-content-0" role="tabpanel">
+   
+
+                                 <div class="row" style="padding-right: 5%; padding-left: 5%;">
+                                    <div class="col-md-12">
+                                        <div class="main-card mb-3 card">
+                                            <div class="card-header"> Inventory
+                                                <!-- <div class="btn-actions-pane-left">
+                                                    <div role="group" class="btn-group-sm nav btn-group">
+                                                        <a data-toggle="tab" href="#tab1" class="btn-shadow active btn btn-primary">Inventory</a>
+                                                        <a data-toggle="tab" href="#tab2" class="btn-shadow  btn btn-primary">Project Name</a>
+                                                        <a data-toggle="tab" href="#tab3" class="btn-shadow  btn btn-primary">Add Budget Item</a>
+                                                    </div>
+                                                </div> -->
+                                                 <div class="btn-actions-pane-right">
+                                                   <div role="group" class="btn-group-sm btn-group">
+                                                      <a href="/inventory/print" class="active btn btn-light">Print</a>
+                                                     <button onclick="exportTableToExcel('inventoryTable', 'Inventory.xlsx')" class="active btn btn-success">Export to Excel</button>
+                                                   </div>
+                                               </div>
+                                            </div>
+                                            <div class="card-body">
+                                             <div class="tab-content">
+                                                    <div class="tab-pane active" id="tab1" role="tabpanel">
+                                                            <div class="table-responsive">
+                                                            <table class="align-middle mb-0 table table-borderless table-striped table-hover" id="inventoryTable">
+                                                               <thead>
+                                                                  <tr>
+                                                                     <th>#</th>
+                                                                     <th class="text-center">Receipt Number</th>
+                                                                     <th class="text-center">Inventory Items Name</th>
+                                                                     <th class="text-center">Unit Of Measure</th>
+                                                                     <th class="text-center">Supplier Name</th>
+                                                                     <th class="text-center">Document</th>
+                                                                     <th class="text-center">Qty</th>
+                                                                     <th class="text-left">Unit Cost</th>
+                                                                     <th class="text-left">Total Cost</th>
+                                                                     
+                                                                  </tr>
+                                                               </thead>
+                                                               <tbody>
+                                                                  {% for inventory in inventories %}
+                                                                     
+                                                                  {% set start = loop.index %}
+
+                                                                  <tr>
+                                                                     <td style="text-align: left;">{{start}}</td>
+                                                                     <td style="text-align: center;">{{inventory.receipts_no}}</td>
+                                                                     <td style="text-align: center;">{{inventory.inventory_items_names}}</td>
+                                                                     <td style="text-align: center;">{{inventory.inventory_items_unit_of_measure}}</td>
+                                                                     <td style="text-align: center;">{{inventory.supplier_name}}</td>
+                                                                     <td style="text-align: center;">{{inventory.document_po}}</td>
+                                                                     <td style="text-align: center;">{{inventory.receipt_qty}}</td>
+                                                                     <td style="text-align: left;">&#8369; {{inventory.receipt_unit_cost}}</td>
+                                                                     <td style="text-align: left;">&#8369; {{inventory.receipt_total_cost}}</td>
+                                                                    
+                                                                  </tr>
+                                                                  {% endfor %}
+                                                               </tbody>
+                                                            </table>
+                                                         </div>
+
+
+                                                    </div>
+                                                    <div class="tab-pane" id="tab2" role="tabpanel">
+
+                                                      <div class="table-responsive">
+                                                      <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                                         <thead>
+                                                            <tr>
+                                                               <th>Transaction2 ID</th>
+                                                               <th class="text-center">Transaction</th>
+                                                               <th class="text-center">Amount</th>
+                                                               <th class="text-center">Date</th>
+                                                               <th class="text-center">Date</th>
+                                                            </tr>
+                                                         </thead>
+                                                         <tbody>
+                                                            <tr>
+                                                               <td style="text-align: center;">not found</td>
+                                                               <td style="text-align: center;">not found</td>
+                                                               <td style="text-align: right;">not found</td>
+                                                               <td style="text-align: center;">not found</td>
+                                                               <td style="text-align: center;">not found</td>
+                                                            </tr>
+                                                         </tbody>
+                                                      </table>
+                                                   </div>
+
+                                                    </div>
+                                                    <div class="tab-pane" id="tab3" role="tabpanel">
+                                                      <div class="table-responsive">
+                                                      <table class="align-middle mb-0 table table-borderless table-striped table-hover">
+                                                         <thead>
+                                                            <tr>
+                                                               <th>Transaction3 ID</th>
+                                                               <th class="text-center">Transaction</th>
+                                                               <th class="text-center">Amount</th>
+                                                               <th class="text-center">Date</th>
+                                                               <th class="text-center">Date</th>
+                                                            </tr>
+                                                         </thead>
+                                                         <tbody>
+                                                            <tr>
+                                                               <td style="text-align: center;">not found</td>
+                                                               <td style="text-align: center;">not found</td>
+                                                               <td style="text-align: right;">not found</td>
+                                                               <td style="text-align: center;">not found</td>
+                                                               <td style="text-align: center;">not found</td>
+                                                            </tr>
+                                                         </tbody>
+                                                      </table>
+                                                   </div>
+                                                     </div>
+                                                </div>
+                                        </div>
+                                    </div> 
+                            </div>
+
+<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+<script>
+    function exportTableToExcel(tableID, filename = '') {
+        // Get table element
+        var table = document.getElementById(tableID);
+
+        // Create a new workbook
+        var workbook = XLSX.utils.book_new();
+
+        // Convert table to worksheet
+        var worksheet = XLSX.utils.table_to_sheet(table);
+
+        // Add the worksheet to the workbook
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+        // Convert workbook to binary representation
+        var excelData = XLSX.write(workbook, { bookType: 'xlsx', type: 'binary' });
+
+        // Create a Blob object for the workbook data
+        var blob = new Blob([s2ab(excelData)], { type: 'application/octet-stream' });
+
+        // Generate a unique filename if not provided
+        if (!filename) {
+            filename = 'Table_Export_' + new Date().getTime() + '.xlsx';
+        }
+
+        // Create a download link element
+        var downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(blob);
+        downloadLink.download = filename;
+
+        // Trigger the download
+        downloadLink.click();
+    }
+
+    // Utility function to convert string to ArrayBuffer
+    function s2ab(s) {
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i = 0; i < s.length; i++) {
+            view[i] = s.charCodeAt(i) & 0xff;
+        }
+        return buf;
+    }
+</script>
+
+   
+             {% include 'footer.html' %}

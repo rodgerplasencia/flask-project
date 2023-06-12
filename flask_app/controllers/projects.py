@@ -9,6 +9,7 @@ from flask_app.models.user import User
 from flask_app.models.project import Project
 from flask_app.models.address import Address
 from flask_app.models.project_budget import Budget
+from flask_app.models.inventory import Inventory
 
 
 def check_session():
@@ -94,3 +95,32 @@ def export():
     directory = "download"
     df.to_excel(os.path.join(directory, "Budget-table.xlsx"), index=False)
     return redirect("/budget")
+
+
+@app.route("/inventory")
+def inventory():
+    check_session()
+    data = {"id": session["user_id"]}
+    data_id = {"user_id": session["user_id"]}
+    user = User.get_by_id(data)
+    inventories = Inventory.get_inventory()
+
+    return render_template("inventory.html", user=user, inventories=inventories)
+
+
+@app.route("/report")
+def view_report():
+    check_session()
+    data = {"id": session["user_id"]}
+    user = User.get_by_id(data)
+    data = {"id": session["user_id"]}
+    address = Address.get_project_address()
+    return render_template("report.html", user=user)
+
+
+@app.route("/inventory/print")
+def inventory_print():
+    data = {"id": session["user_id"]}
+    user = User.get_by_id(data)
+    inventories = Inventory.get_inventory()
+    return render_template("inventory-print.html", user=user, inventories=inventories)

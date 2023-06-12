@@ -7,11 +7,7 @@ class Budget:
 
     def __init__(self, db_data):
         self.id = db_data["id"]
-        self.inventory_items_id = db_data["inventory_items_id"]
-        self.project_budgetscol = db_data["project_budgetscol"]
         self.project_budget_qty = db_data["project_budget_qty"]
-        self.project_budget_unit_cost = db_data["project_budget_unit_cost"]
-        self.project_budget_total_cost = db_data["project_budget_total_cost"]
         self.created_at = db_data["created_at"]
         self.updated_at = db_data["updated_at"]
 
@@ -28,11 +24,7 @@ class Budget:
         for result in results:
             ad = cls(result)
             ad.id = result["id"]
-            ad.inventory_items_id = result["inventory_items_id"]
-            ad.project_budgetscol = result["project_budgetscol"]
             ad.project_budget_qty = result["project_budget_qty"]
-            ad.project_budget_unit_cost = result["project_budget_unit_cost"]
-            ad.project_budget_total_cost = result["project_budget_total_cost"]
             ad.created_at = result["created_at"]
             ad.updated_at = result["updated_at"]
             budgets.append(ad)

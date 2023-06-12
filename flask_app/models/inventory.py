@@ -7,9 +7,14 @@ class Inventory:
 
     def __init__(self, db_data):
         self.id = db_data["id"]
+        self.receipts_no = db_data["receipts_no"]
+        self.inventory_items_names = db_data["inventory_items_names"]
+        self.inventory_items_unit_of_measure = db_data[
+            "inventory_items_unit_of_measure"
+        ]
         self.inventory_items_id = db_data["inventory_items_id"]
         self.inventory_ledger_id = db_data["inventory_ledger_id"]
-        self.suplier_name = db_data["suplier_name"]
+        self.supplier_name = db_data["supplier_name"]
         self.document_po = db_data["document_po"]
         self.receipt_qty = db_data["receipt_qty"]
         self.receipt_unit_cost = db_data["receipt_unit_cost"]
@@ -30,9 +35,14 @@ class Inventory:
         for result in results:
             ad = cls(result)
             ad.id = result["id"]
+            ad.receipts_no = result["receipts_no"]
+            ad.inventory_items_names = result["inventory_items_names"]
+            ad.inventory_items_unit_of_measure = result[
+                "inventory_items_unit_of_measure"
+            ]
             ad.inventory_items_id = result["inventory_items_id"]
             ad.inventory_ledger_id = result["inventory_ledger_id"]
-            ad.project_budget_qty = result["suplier_name"]
+            ad.project_budget_qty = result["supplier_name"]
             ad.document_po = result["document_po"]
             ad.receipt_qty = result["receipt_qty"]
             ad.receipt_unit_cost = result["receipt_unit_cost"]

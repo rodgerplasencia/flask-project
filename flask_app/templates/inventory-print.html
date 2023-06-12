@@ -1,0 +1,128 @@
+<html>
+
+
+
+<head>
+	<link rel="icon" href="{{ url_for('static',filename='prt_assets/assets/images/favicon.png') }}" type="image/png" sizes="16x16">
+		<title>Data Print</title>
+		<style>
+		
+		
+.container {
+	width:75%;
+	margin:auto;
+}
+		
+.table {
+	border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 8px;
+}	
+
+.table-striped tbody > tr:nth-child(odd) > td,
+.table-striped tbody > tr:nth-child(odd) > th {
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.table th, .table td {
+  padding: 5px;
+  line-height: 14px;
+  text-align: left;
+  border-top: 1px solid #ddd;
+}
+
+@media print{
+#print {
+display:none;
+}
+}
+
+#print {
+	width: 90px;
+    height: 30px;
+    font-size: 18px;
+    background: white;
+    border-radius: 4px;
+	margin-left:11px;
+	cursor:hand;
+}
+		
+		</style>
+<script>
+function printPage() {
+    window.print();
+}
+</script>
+		
+</head>
+
+
+<body>
+	<div class = "container">
+		<div id = "header">
+		<br/>
+<button type="submit" id="print" onclick="printPage()">Print</button>
+			<p style = "margin-left:30px; margin-top:40px; font-size:12pt; font-weight:bold;" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <div align="left">
+		<b style="color:black;">Date Prepared:</b>
+    {% include 'current-date.html' %}
+        </div>			
+		<br/>
+
+			<table class="table">
+                <thead>
+                    <tr>
+                       <th>#</th>
+                       <th class="text-center">Receipt Number</th>
+                       <th class="text-center">Inventory Items Name</th>
+                       <th class="text-center">Unit Of Measure</th>
+                       <th class="text-center">Supplier Name</th>
+                       <th class="text-center">Document</th>
+                       <th class="text-center">Qty</th>
+                       <th class="text-left">Unit Cost</th>
+                       <th class="text-left">Total Cost</th>
+                       
+                    </tr>
+                 </thead>
+                 <tbody>
+                    {% for inventory in inventories %}
+                       
+                    {% set start = loop.index %}
+
+                    <tr>
+                       <td style="text-align: left;">{{start}}</td>
+                       <td style="text-align: center;">{{inventory.receipts_no}}</td>
+                       <td style="text-align: left;">{{inventory.inventory_items_names}}</td>
+                       <td style="text-align: center;">{{inventory.inventory_items_unit_of_measure}}</td>
+                       <td style="text-align: center;">{{inventory.supplier_name}}</td>
+                       <td style="text-align: center;">{{inventory.document_po}}</td>
+                       <td style="text-align: center;">{{inventory.receipt_qty}}</td>
+                       <td style="text-align: left;">&#8369; {{inventory.receipt_unit_cost}}</td>
+                       <td style="text-align: left;">&#8369; {{inventory.receipt_total_cost}}</td>
+                      
+                    </tr>
+                    {% endfor %}
+                 </tbody>
+				
+				</table>
+
+<br />
+<br />
+
+<b style="color:black; font-size:15px;">
+Prepared By: Cost Management Application.
+</b>
+
+
+			</div>
+	
+	
+	
+	
+
+	</div>
+</body>
+
+
+</html>

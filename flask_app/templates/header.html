@@ -13,6 +13,9 @@
          =========================================================
          -->
       <link href="{{ url_for('static',filename='main_assets/main.css') }}" rel="stylesheet">
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  
    </head>
    <body>
       <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
@@ -41,50 +44,57 @@
                      <div class="widget-content p-0">
                         <div class="widget-content-wrapper">
                            <ul class="header-menu nav">
-                               <li class="nav-item" {% if user.status != "admin" %}hidden{% endif %}>
-                                 <a href="/budget" class="nav-link">
+                              <li class="nav-item" {% if user.status =="unverified" %}hidden{% endif %}>
+                                 <a href="/dashboard" class="nav-link">
                                  <i class="nav-link-icon fa fa-home"> </i>
+                                 Home
+                                 </a>
+                              </li>
+                              <li class="nav-item" {% if user.status =="unverified" %}hidden{% endif %}>
+                                 <a href="/job/orders" class="nav-link">
+                                 <i class="nav-link-icon fa fa-picture"> </i>
+                                 Job Order
+                                 </a>
+                              </li>
+                              <li class="nav-item" {% if user.status =="unverified" %}hidden{% endif %} hidden>
+                                 <a href="/job_orders" class="nav-link">
+                                 <i class="nav-link-icon fa fa-picture"> </i>
+                                 Job Order
+                                 </a>
+                              </li>
+                               <li class="nav-item" {% if user.status != "admin" %}hidden{% endif %} {% if user.status =="unverified" %}hidden{% endif %}>
+                                 <a href="/budget" class="nav-link">
+                                 <i class="nav-link-icon fa fa-pie-chart"> </i>
                                  Project Budget
                                  </a>
                               </li>
-                              <li class="nav-item" {% if user.status != "admin" %}hidden{% endif %}>
+                              <li class="nav-item" {% if user.status != "admin" %}hidden{% endif %} {% if user.status =="unverified" %}hidden{% endif %}>
                                  <a href="/project/address" class="nav-link">
-                                 <i class="nav-link-icon fa fa-home"> </i>
+                                 <i class="nav-link-icon fa fa-globe"> </i>
                                  Project Address
                                  </a>
                               </li>
-                           <li class="nav-item" {% if user.status != "admin" %}hidden{% endif %}>
-                              <a href="/project/address" class="nav-link">
-                              <i class="nav-link-icon fa fa-home"> </i>
-                              Project Address
-                              </a>
-                           </li>
-                           <li class="nav-item">
+                          
+                           <li class="nav-item"  {% if user.status != "admin" %}hidden{% endif %} {% if user.status =="unverified" %}hidden{% endif %}>
                               <a href="/project" class="nav-link">
                               <i class="nav-link-icon fa fa-home"> </i>
                               Project
                               </a>
                            </li>
-                           <li class="nav-item">
-                              <a href="/dashboard" class="nav-link">
-                              <i class="nav-link-icon fa fa-picture"> </i>
-                              Job Order
-                              </a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="/dashboard" class="nav-link">
+                           <li class="nav-item" {% if user.status == "unverified" %}hidden{% endif %}>
+                              <a href="/inventory" class="nav-link">
                               <i class="nav-link-icon fa fa-edit"> </i>
                               Inventory
                               </a>
                            </li>
 
-                           <li class="nav-item">
-                              <a href="/dashboard" class="nav-link">
+                           <li class="nav-item" {% if user.status == "unverified" %}hidden{% endif %}>
+                              <a href="/report" class="nav-link">
                               <i class="nav-link-icon fa fa-book"> </i>
                               Report
                               </a>
                            </li>
-                           <li class="nav-item" {% if user.status != "admin" %}hidden{% endif %}>
+                           <li class="nav-item" {% if user.status != "admin" %}hidden{% endif %} {% if user.status =="unverified" %}hidden{% endif %}>
                               <a href="/employee/status" class="nav-link">
                               <i class="nav-link-icon fa fa-book"> </i>
                               Employees status

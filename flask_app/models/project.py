@@ -11,7 +11,6 @@ class Project:
 
     def __init__(self, db_data):
         self.id = db_data["id"]
-        self.project_name = db_data["project_name"]
         self.lot_area = db_data["lot_area"]
         self.floor_area = db_data["floor_area"]
         self.location = db_data["location"]
@@ -37,7 +36,7 @@ class Project:
 
     @classmethod
     def save(cls, data):
-        query = "INSERT INTO projects (project_name, lot_area, floor_area, location, description, project_revinue,project_address_id)VALUES(%(project_name)s, %(lot_area)s,  %(floor_area)s, %(location)s, %(description)s, %(project_revinue)s, %(project_address_id)s);"
+        query = "INSERT INTO projects ( lot_area, floor_area, location, description, project_revinue,project_address_id)VALUES(%(lot_area)s,  %(floor_area)s, %(location)s, %(description)s, %(project_revinue)s, %(project_address_id)s);"
         return connectToMySQL(cls.db_name).query_db(query, data)
 
     # @classmethod  # individual na tawag

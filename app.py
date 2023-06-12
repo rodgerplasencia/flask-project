@@ -1,5 +1,5 @@
 from flask_app import app
-from flask_app.controllers import projects, users, addresses
+from flask_app.controllers import projects, users, addresses, job_orders
 
 
 if __name__ == "__main__":
